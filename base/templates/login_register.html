@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register{% endblock title%}
+
+{% block content %}
+{% if page == 'login' %}
+
+<div class="container mt-5" id="card-login">
+    <div class="card p-3 border-dark">
+        <a class="btn btn-outline-dark mt-3" id="title-login">Login</a>
+        <form method="POST" autocomplete="off" novalidate>
+            {% csrf_token %}
+            <div class="input-group mb-1 mt-1">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                <input type="text" class="form-control" name="username" placeholder="Username">
+            </div>
+            <div class="input-group mb-1 mt-1">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <input class="btn btn-dark btn-sm mt-4 mb-3" type="submit" id="btn-enter" value="Sign in">
+        </form>
+    </div>
+</div>
+
+{% else %}
+<div class="container mt-5" id="card-login">
+    <div class="card p-3 border-dark">
+        <a class="btn btn-outline-dark mt-3" id="title-login">Register</a>
+        <form method="POST" autocomplete="off" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+<!--            {% for field in form %}-->
+<!--            <div class="input-group mb-1 mt-1">-->
+<!--                <span class="input-group-text"></span>-->
+<!--                <input type="text" class="form-control" name="{{ field.label }}" placeholder="{{ field.label }}">-->
+<!--            </div>-->
+<!--            {% endfor %}-->
+            <input class="btn btn-dark btn-sm mt-4 mb-3" type="submit" id="btn-enter" value="Sign up">
+        </form>
+    </div>
+</div>
+
+{% endif %}
+{% endblock content %}
