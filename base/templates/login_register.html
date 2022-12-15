@@ -1,7 +1,9 @@
 {% extends 'main.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Register{% endblock title%}
+
+{% block title %}{% if page == 'login' %}Login{% else %}Register{% endif %}{% endblock title%}
+
 
 {% block content %}
 {% if page == 'login' %}
