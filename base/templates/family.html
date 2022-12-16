@@ -10,7 +10,7 @@
   <br><br>
 
     <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn btn-outline-dark btn-sm"><i></i>Add Member</a>
+        <a href="{% url 'add_member' %}" class="btn btn btn-outline-dark btn-sm"><i></i>Add Member</a>
     </div>
 
     <form>
@@ -25,19 +25,25 @@
         <table class="table table-bordered table-sm mt-4" style="text-align: center; font-size: 14px;">
             <thead class="table-secondary">
                 <tr>
-                    <th style="width: 25%">Name</th>
-                    <th style="width: 25%">Parents</th>
-                    <th style="width: 20%">Children</th>
-                    <th style="width: 20%">Date of birth</th>
+                    <th>Name</th>
+                    <th>Date of birth</th>
+                    <th>Place of birth</th>
+                    <th>Parents</th>
+                    <th>Children</th>
+                    <th>Spouses</th>
+                    <th>Siblings</th>
                     <th style="width: 10%" colspan="2">Actions</th>
                 </tr>
             </thead>
             {% for member in members %}
             <tr>
-                <td> {{ member }}</td>
+                <td> <a href="{% url 'profile' member.id %}">{{ member }}</a></td>
+                <td> {{ member.date_of_birth }}</td>
+                <td> {{ member.place_of_birth }}</td>
                 <td> {% for parent in member.parents.all %} {{ parent }} {% endfor %}</td>
                 <td> {% for child in member.children.all %} {{ child }} {% endfor %}</td>
-                <td> {{ member.date_of_birth }}</td>
+                <td> {% for spouse in member.spouses.all %} {{ spouse }} {% endfor %}</td>
+                <td> {% for sibling in member.siblings.all %} {{ sibling }} {% endfor %}</td>
                 <td>
                     <a href ="#" class="btn btn-dark btn-sm" title="Edit Member">
                         <i>Edit</i>

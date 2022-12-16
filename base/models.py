@@ -14,10 +14,10 @@ class Member(models.Model):
     date_of_birth = models.CharField(max_length=50, blank=True)
     date_of_death = models.CharField(max_length=50, blank=True)
     date_of_marriage = models.CharField(max_length=50, blank=True)
-    spouses = models.ManyToManyField('self', related_name="rel_spouses", blank=True, symmetrical=False)
-    parents = models.ManyToManyField('self', related_name="rel_children", blank=True, symmetrical=False, null=True)
-    children = models.ManyToManyField('self', related_name="rel_parents", blank=True, symmetrical=False, null=True)
-    siblings = models.ManyToManyField('self', related_name="rel_siblings", blank=True, symmetrical=False, null=True)
+    spouses = models.ManyToManyField('self', blank=True)
+    # parents = models.ManyToManyField('self', related_name=children, blank=True, symmetrical=False)
+    # children = models.ManyToManyField('self', related_name=parents, blank=True, symmetrical=False)
+    siblings = models.ManyToManyField('self', blank=True)
     notes = models.CharField(max_length=1000, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -26,8 +26,8 @@ class Member(models.Model):
         ordering = ['-updated', '-created']
 
     def __str__(self):
-        if self.nee_name == "":
-            return f"{self.last_name} {self.first_name}"
-        else:
+        if self.nee_name != None:
             return f"{self.last_name} {self.first_name}  ({self.nee_name})"
+        else:
+            return f"{self.last_name} {self.first_name}"
 
