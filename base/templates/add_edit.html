@@ -4,8 +4,8 @@
 
 {% block title %}Add member{% endblock title%}
 
-
 {% block content %}
+{% if page == 'add' %}
 <div class="container mt-5" id="card-login">
     <div class="card p-3 border-dark">
         <a class="btn btn-outline-dark mt-3" id="title-login">Add member</a>
@@ -16,6 +16,19 @@
         </form>
     </div>
 </div>
+{% else %}
+<div class="container mt-5" id="card-login">
+    <div class="card p-3 border-dark">
+        <a class="btn btn-outline-dark mt-3" id="title-login">Edit member</a>
+        <form method="POST" autocomplete="off" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-dark btn-sm mt-4 mb-3" type="submit" id="btn-enter" value="Edit member">
+        </form>
+    </div>
+</div>
+{% endif %}
+
 
 
 {% endblock content %}

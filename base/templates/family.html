@@ -7,7 +7,7 @@
 
 {% block content %}
 <div>
-  <br><br>
+    <br><br>
 
     <div class="d-flex justify-content-between">
         <a href="{% url 'add_member' %}" class="btn btn btn-outline-dark btn-sm"><i></i>Add Member</a>
@@ -21,23 +21,23 @@
         </div>
     </form>
 
-  <center>
+    <center>
         <table class="table table-bordered table-sm mt-4" style="text-align: center; font-size: 14px;">
             <thead class="table-secondary">
-                <tr>
-                    <th>Name</th>
-                    <th>Date of birth</th>
-                    <th>Place of birth</th>
-                    <th>Parents</th>
-                    <th>Children</th>
-                    <th>Spouses</th>
-                    <th>Siblings</th>
-                    <th style="width: 10%" colspan="2">Actions</th>
-                </tr>
+            <tr>
+                <th>Name</th>
+                <th>Date of birth</th>
+                <th>Place of birth</th>
+                <th>Parents</th>
+                <th>Children</th>
+                <th>Spouses</th>
+                <th>Siblings</th>
+                <th style="width: 10%" colspan="2">Actions</th>
+            </tr>
             </thead>
             {% for member in members %}
             <tr>
-                <td> <a href="{% url 'profile' member.id %}">{{ member }}</a></td>
+                <td><a class="link-dark" href="{% url 'profile' member.id %}">{{ member }}</a></td>
                 <td> {{ member.date_of_birth }}</td>
                 <td> {{ member.place_of_birth }}</td>
                 <td> {% for parent in member.parents.all %} {{ parent }} {% endfor %}</td>
@@ -45,20 +45,60 @@
                 <td> {% for spouse in member.spouses.all %} {{ spouse }} {% endfor %}</td>
                 <td> {% for sibling in member.siblings.all %} {{ sibling }} {% endfor %}</td>
                 <td>
-                    <a href ="#" class="btn btn-dark btn-sm" title="Edit Member">
-                        <i>Edit</i>
-                    </a>
+                    <a href="{% url 'edit_member' member.id %}" class="btn btn-secondary btn-sm" title="Edit Member">Edit</a>
                 </td>
                 <td>
-                    <a method="POST" href ="#" class="btn btn-secondary btn-sm" title="Delete Member">
-                        <i>Delete</i>
-                    </a>
+                    <button href="" data-bs-toggle="modal" data-bs-target="#mod"
+                       class="btn btn-dark btn-sm" title="Delete Member">Delete</button>
                 </td>
             </tr>
             {% endfor %}
         </table>
     </center>
+</div>
+                    <button href="" data-bs-toggle="modal" data-bs-target="#mod2"
+                       class="btn btn-dark btn-sm" title="Delete Member">Delete</button>
 
+<!-- Modal -->
+<div class="modal fade" id="mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete? {{member}}
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-dark btn-sm" data-bs-dismiss="modal">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mod2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                mod2
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-dark btn-sm" data-bs-dismiss="modal">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
