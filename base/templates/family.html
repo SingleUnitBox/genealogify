@@ -16,8 +16,8 @@
     <form>
         <div class="input-group input-group-sm mb-3 mt-4">
             <input name="q" type="text" class="form-control" placeholder="Search for...">
-            <button class="btn btn-secondary"><i></i>Search</button>
-            <a href="#" class="btn btn-dark" style="margin-left: 2px;"><i></i>Refresh</a>
+            <button class="btn btn-secondary"><i class="fa fa-search"></i> Search</button>
+            <a href="{% url 'family' %}" class="btn btn-dark" style="margin-left: 2px;"><i class="fa fa-refresh"></i> Refresh</a>
         </div>
     </form>
 
@@ -32,7 +32,7 @@
                 <th>Children</th>
                 <th>Spouses</th>
                 <th>Siblings</th>
-                <th style="width: 10%" colspan="2">Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
             </thead>
             {% for member in members %}
@@ -46,11 +46,10 @@
                 <td> {% for sibling in member.siblings.all %} {{ sibling }} {% endfor %}</td>
                 <td>
                     <a href="{% url 'edit_member' member.id %}" class="btn btn-secondary btn-sm" title="Edit Member">Edit</a>
-                </td>
-                <td>
                     <button href="" data-bs-toggle="modal" data-bs-target="#mod"
                        class="btn btn-dark btn-sm" title="Delete Member">Delete</button>
                 </td>
+
             </tr>
             {% endfor %}
         </table>

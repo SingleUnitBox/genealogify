@@ -16,7 +16,6 @@ class Member(models.Model):
     date_of_marriage = models.CharField(max_length=50, blank=True)
     spouses = models.ManyToManyField('self', blank=True)
     parents = models.ManyToManyField('self', related_name='children', blank=True, symmetrical=False)
-    #children = models.ForeignKey('self', related_name='parents', blank=True, on_delete=models.SET_NULL)
     siblings = models.ManyToManyField('self', blank=True)
     notes = models.CharField(max_length=1000, blank=True)
     updated = models.DateTimeField(auto_now=True)

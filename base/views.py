@@ -4,6 +4,7 @@ from .forms import UserRegForm, MemberForm
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from .models import Member
+from django.db.models import Q
 User = get_user_model()
 
 
@@ -53,7 +54,10 @@ def user_logout(request):
     return redirect('home')
 
 def family(request):
-    members = Member.objects.all()
+    q = request.GET.get('q')
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lookups = Q(first_name__icontains=q) | Q(last_name__icontains=q)
+    members = Member.objects.filter(lookups)
 
     context = {'members': members}
     return render(request, 'family.html', context)
@@ -86,7 +90,8 @@ def add_member(request):
             # parents_to_be_added = request.POST.getlist('parents')
             # for parent in parents_to_be_added:
             #     member.parents.add(parent)
-            #messages.success(request, f"Member {member} successfully added")
+            member = Member.objects.all().first()
+            messages.success(request, f"Member {member} successfully added")
             return redirect('family')
 
     context = {'form': form, 'page': page}
@@ -106,7 +111,7 @@ def edit_member(request, pk):
 
 def delete_member(request, pk):
     try:
-        member = Member.objects.get(id=pk)
+        member = Member.objects
     except:
         messages.warning(request, "Member not found.")
     else:
@@ -117,10 +122,9 @@ def delete_member(request, pk):
 
 def profile(request, pk):
     try:
-        member = Member.objects.filter(id=pk)
+        member = Member.objects.get(id=pk)
     except:
         messages.warning(request, "Member not found.")
-
     context = {'member': member}
     return render(request, 'profile.html', context)
 

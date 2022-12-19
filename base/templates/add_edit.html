@@ -2,7 +2,10 @@
 {% load crispy_forms_tags %}
 
 
-{% block title %}Add member{% endblock title%}
+{% block title %}{% if page == 'add' %}Add member{% else %}Edit member{% endif %}{% endblock title%}
+
+
+
 
 {% block content %}
 {% if page == 'add' %}
