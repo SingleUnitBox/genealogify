@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from .models import Member
 from django.db.models import Q
+from django.core.paginator import Paginator
 User = get_user_model()
 
 
@@ -58,6 +59,10 @@ def family(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lookups = Q(first_name__icontains=q) | Q(last_name__icontains=q)
     members = Member.objects.filter(lookups)
+
+    paginator = Paginator(members, 2)
+    page_number = request.GET.get('page')
+    members = paginator.get_page(page_number)
 
     context = {'members': members}
     return render(request, 'family.html', context)

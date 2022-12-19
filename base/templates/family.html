@@ -55,49 +55,33 @@
         </table>
     </center>
 </div>
-                    <button href="" data-bs-toggle="modal" data-bs-target="#mod2"
-                       class="btn btn-dark btn-sm" title="Delete Member">Delete</button>
 
-<!-- Modal -->
-<div class="modal fade" id="mod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure to delete? {{member}}
-            </div>
-            <div class="modal-footer">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-dark btn-sm" data-bs-dismiss="modal">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="mod2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                mod2
-            </div>
-            <div class="modal-footer">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-dark btn-sm" data-bs-dismiss="modal">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+    <nav class="mt-4" aria-label="Page navigation example">
+        {% if members.has_other_pages %}
+        <ul class="pagination justify-content-left">
+            {% if members.has_previous %}
+            <a href="?page=1" class="btn btn-outline-secondary mb-4">First</a>
+            <li class="page-item"><a class="btn btn-outline-secondary mb-4" href="?page={{ members.previous_page_number }}"><i><<</i></a></li>
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}
+
+            {% for i in members.paginator.page_range %}
+            {% if members.number == i %}
+            <li class="page-item active"><span class="btn btn-dark mb-4">{{ i }}<span class="sr-only"></span></span></li>
+            {% else %}
+            <li class="page-item"><a class="btn btn-outline-secondary mb-4" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if members.has_next %}
+            <li class="page-item"><a class="btn btn-outline-secondary mb-4" href="?page={{ members.next_page_number }}"><i>>></i></a></li>
+            <a href="?page={{ members.paginator.num_pages }}" class="btn btn-outline-secondary mb-4">Last</a>
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </nav>
 
 {% endblock content %}
