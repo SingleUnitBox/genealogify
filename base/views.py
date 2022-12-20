@@ -6,6 +6,10 @@ from django.contrib.auth import get_user_model, login, authenticate, logout
 from .models import Member
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.core import serializers
+import json
+
 User = get_user_model()
 
 
@@ -53,27 +57,29 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
-
+@login_required(login_url='login')
 def family(request):
     q = request.GET.get('q')
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lookups = Q(first_name__icontains=q) | Q(last_name__icontains=q)
     members = Member.objects.filter(lookups)
 
-    paginator = Paginator(members, 2)
+    paginator = Paginator(members, 5)
     page_number = request.GET.get('page')
     members = paginator.get_page(page_number)
 
     context = {'members': members}
     return render(request, 'family.html', context)
-
+@login_required(login_url='login')
 def add_member(request):
     page = 'add'
     form = MemberForm()
     if request.method == 'POST':
-        form = MemberForm(request.POST)
+        form = MemberForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            member = form.save(commit=False)
+            member.host = request.user
+            member.save()
             # member = Member.objects.create(
             #     host=request.user,
             #     first_name=request.POST.get('first_name'),
@@ -95,25 +101,24 @@ def add_member(request):
             # parents_to_be_added = request.POST.getlist('parents')
             # for parent in parents_to_be_added:
             #     member.parents.add(parent)
-            member = Member.objects.all().first()
             messages.success(request, f"Member {member} successfully added")
             return redirect('family')
 
     context = {'form': form, 'page': page}
     return render(request, 'add_edit.html', context)
-
+@login_required(login_url='login')
 def edit_member(request, pk):
     member = Member.objects.get(id=pk)
     form = MemberForm(instance=member)
     if request.method == 'POST':
-        form = MemberForm(request.POST, instance=member)
+        form = MemberForm(request.POST, request.FILES, instance=member)
         if form.is_valid():
             form.save()
             messages.success(request, f"Member {member} successfully edited")
         return redirect('family')
     context = {'form': form}
     return render(request, 'add_edit.html', context)
-
+@login_required(login_url='login')
 def delete_member(request, pk):
     try:
         member = Member.objects
@@ -124,12 +129,20 @@ def delete_member(request, pk):
             member.delete()
             messages.success(request, f"Member successfully deleted.")
             return redirect('family')
-
+@login_required(login_url='login')
 def profile(request, pk):
-    try:
-        member = Member.objects.get(id=pk)
-    except:
+    member = Member.objects.filter(id=pk)
+    if member == None:
         messages.warning(request, "Member not found.")
-    context = {'member': member}
+
+    member_data = serializers.serialize('json', member)
+    json_object = json.loads(member_data)[0]['fields']
+
+    for key in json_object:
+        print(json_object[key])
+
+
+
+    context = {'member_data': json_object, 'member': member}
     return render(request, 'profile.html', context)
 

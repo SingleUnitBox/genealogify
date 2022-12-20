@@ -18,6 +18,7 @@ class Member(models.Model):
     parents = models.ManyToManyField('self', related_name='children', blank=True, symmetrical=False)
     siblings = models.ManyToManyField('self', blank=True)
     notes = models.CharField(max_length=1000, blank=True)
+    image = models.ImageField(upload_to="images/", null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

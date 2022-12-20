@@ -6,7 +6,26 @@
 
 
 {% block content %}
-{{member}}
+
+<br>
+{% if member.image %}
+<img width=500 src="{{ member.image.url }}">
+{% endif %}
+
+    <center>
+        <table class="table table-bordered table-sm mt-4" style="text-align: center; font-size: 14px;">
+            <thead>
+            <tr><th> {{ member }} </th></tr>
+            {% for key, value in member_data.items %}
+            <tr>
+                <th class="table-secondary" width="200px">{{ key.title }}</th><td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+            </thead>
+
+        </table>
+    </center>
+
 
 
 {% endblock content %}
