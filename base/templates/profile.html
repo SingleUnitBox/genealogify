@@ -1,5 +1,4 @@
 {% extends 'main.html' %}
-{% load crispy_forms_tags %}
 
 
 {% block title %}Profile{% endblock title%}
@@ -7,25 +6,23 @@
 
 {% block content %}
 
-<br>
-{% if member.image %}
-<img width=500 src="{{ member.image.url }}">
-{% endif %}
-
-    <center>
-        <table class="table table-bordered table-sm mt-4" style="text-align: center; font-size: 14px;">
-            <thead>
-            <tr><th> {{ member }} </th></tr>
-            {% for key, value in member_data.items %}
-            <tr>
-                <th class="table-secondary" width="200px">{{ key.title }}</th><td>{{ value }}</td>
-            </tr>
-            {% endfor %}
-            </thead>
-
-        </table>
-    </center>
-
+<div class="card">
+    <div class="card-header">
+        {{ member }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ member }}</h5>
+        <p class="card-text">
+        <ul>
+            <li><strong>Place of Birth: </strong>{{ member.place_of_birth }}</li>
+            <li><strong>Spouses: </strong>{% for spouse in member.spouses.all %} {{ spouse }}, {% endfor %}</li>
+            <li><strong>Parents: </strong>{% for parent in member.parents.all %} {{ parent }}, {% endfor %}</li>
+            <li><strong>Siblings: </strong>{% for sibling in member.siblings.all %} {{ sibling }}, {% endfor %}</li>
+            <li><strong>Notes: </strong>{{ member.notes }}</li>
+        </ul>
+        </p>
+    </div>
+</div>
 
 
 {% endblock content %}

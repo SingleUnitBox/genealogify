@@ -32,5 +32,8 @@ class MemberForm(forms.ModelForm):
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_death': forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_marriage': forms.TextInput(attrs={'class': 'form-control'}),
-            #'spouses': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'spouses': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Spouses'}),
+            'parents': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Parents'}),
+            'siblings': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Siblings'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Notes'}),
         }

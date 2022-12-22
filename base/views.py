@@ -64,7 +64,7 @@ def family(request):
     lookups = Q(first_name__icontains=q) | Q(last_name__icontains=q)
     members = Member.objects.filter(lookups)
 
-    paginator = Paginator(members, 5)
+    paginator = Paginator(members, 50)
     page_number = request.GET.get('page')
     members = paginator.get_page(page_number)
 
@@ -131,18 +131,16 @@ def delete_member(request, pk):
             return redirect('family')
 @login_required(login_url='login')
 def profile(request, pk):
-    member = Member.objects.filter(id=pk)
+    member = Member.objects.get(pk=pk)
     if member == None:
         messages.warning(request, "Member not found.")
 
-    member_data = serializers.serialize('json', member)
-    json_object = json.loads(member_data)[0]['fields']
-
-    for key in json_object:
-        print(json_object[key])
+    # member_data = serializers.serialize('json', member)
+    # json_object = json.loads(member_data)[0]['fields']
 
 
 
-    context = {'member_data': json_object, 'member': member}
+
+    context = {'member': member}
     return render(request, 'profile.html', context)
 
